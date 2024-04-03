@@ -6,3 +6,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
     layout="wide",
 )
+
+"""
+# CAPM Portfolio Optimization with Risk Aversion Adjustment 
+
+Itsa me, Justin!
+
+"""
