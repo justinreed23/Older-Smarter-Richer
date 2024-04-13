@@ -1,7 +1,7 @@
 numpy
 pandas 
 seaborn
-streamlit >= 1.9.2
+streamlit
 matplotlib
 pandas-datareader
 spyder
