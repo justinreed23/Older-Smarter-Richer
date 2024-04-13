@@ -2,8 +2,6 @@
  
 We do a little testing
 
-https://apptesting-eknfzp6fizhzckci3jdc6r.streamlit.app/
+https://personalinvestmentdashboard.streamlit.app/
 
 there has been no work done besides making sure it can launch
-
-nevermind it doesn't launch anymore
