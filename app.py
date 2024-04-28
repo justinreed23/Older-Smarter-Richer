@@ -50,7 +50,7 @@ with st.sidebar:
     household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
     
     save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=0.1, max_value=100.0, value=5.0, step=0.1) / 100
-    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement?", min_value=0.0, max_value=0.05, value=0.03, step=0.01)
+    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement?", min_value=0.0, max_value=0.08, value=0.03, step=0.01)
     risk_aversion_options = ["Low", "Medium", "High"]
     selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
 
