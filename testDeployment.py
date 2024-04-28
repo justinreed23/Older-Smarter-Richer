@@ -45,14 +45,14 @@ with st.sidebar:
     inflation_rate = st.slider("What is your expected annual income growth rate?", min_value=0.0, max_value=10.0, value=5.0, step=0.1)
    
 
-risk_aversion_options = ["Low", "Medium", "High"]
-selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
-# Assigning values based on user selection
-if selected_risk_aversion == "Low":
+    risk_aversion_options = ["Low", "Medium", "High"]
+    selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
+    # Assigning values based on user selection
+    if selected_risk_aversion == "Low":
     risk_aversion = (0.0, 3.0)  # Assign a specific value for low risk aversion
-elif selected_risk_aversion == "Medium":
+    elif selected_risk_aversion == "Medium":
     risk_aversion = (4.0, 6.0)  # Assign a specific value for medium risk aversion
-else:
+    else:
     risk_aversion =(7.0, 10.0)  # Assign a specific value for high risk aversion
 
 
