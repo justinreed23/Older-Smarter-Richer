@@ -11,6 +11,17 @@ st.set_page_config(
         "Get Help" : 'https://media.tenor.com/mZZoOtDcouoAAAAM/stop-it-get-some-help.gif'
     }
 )
+[theme]
+base="light"  # Choose "light" or "dark", depending on which base theme you prefer.
+
+primaryColor="#FF4B4B"  # Changes the color of primary buttons and other elements.
+backgroundColor="#FFFFFF"
+secondaryBackgroundColor="#F0F2F6"
+textColor="#262730"
+font="sans serif"
+
+# Sidebar-specific
+sidebar.backgroundColor="#0088FF"
 
 """
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
