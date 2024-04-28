@@ -15,8 +15,8 @@ st.set_page_config(
 """
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find your Optimal Investment Portfolio for Retirement by filling out our Survey
 ## Project Purpose:
-In the modern investing landscape, the traditional approach of using a 60:40 stock-bond approach is prevalent. This strategy involves allocating 60% to stocks and 40% bonds at the beggining of one's life, then typically flips those weights after retirement. This aims to provide a simplified balance between growth potential from stocks and stability from bonds. 
-
+In the modern investing landscape, the traditional approach of using a 60:40 stock-bond approach is prevalent. This strategy involves allocating 60% to stocks and 40% bonds at the beggining of one's life, then typically flips those weights after retirement. This aims to provide a simplified balance between growth potential from stocks and stability from bonds. Our goal was to come up with a more advanced model, which creates a survey for one to clarify their investing and retirement goals to find their optimal investing strategy without having to use unrefined methods or taking the time and effort to work with a professional advisor.  
+We hypothesise that different income levels and risk profiles favor different strategies. We use an equation to determine the optimal portfolio selection after the subject has outlined his/her self-described parameters. In addition to findinf the optimal investment portfolio, we will also display the cumulative returns over time that one may recieve using our optimized model. 
 ##Caveats
 ##Links to Raw Data
 ##About Us
