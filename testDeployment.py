@@ -43,14 +43,14 @@ $$U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-
 ## Caveats:
 Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
 ## About Us:
-# Reghan Hesser
+### Reghan Hesser
 title: "Reghan Hesser" # Your name (or website title) here
 logo: "/images/headshot.jpg"
 - Major: Finance 
 - Year of Graduation: 2024
 - Interests: Cooking, Skiing, Dancing 
-# Justin Reed
-# Maria Maragkelli
+### Justin Reed
+### Maria Maragkelli
 
 
 """
