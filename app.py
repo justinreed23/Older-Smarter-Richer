@@ -3,7 +3,7 @@ import numpy as np
 import pandas as pd
 import datetime
 import math
-import seaborn as sns
+import plotly.express as px
 
 st.set_page_config(
     "Older, Smarter, Richer",
@@ -211,6 +211,6 @@ returns
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
-graph = sns.lineplot(data=returns, x='date', y='savings', hue='Portfolio')
+fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time")
 
-graph
+st.plotly_chart(fig, use_container_width=False)
