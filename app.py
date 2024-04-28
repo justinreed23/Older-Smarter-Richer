@@ -104,6 +104,8 @@ returns = pd.DataFrame(
 returns['income'] = 0.0
 
 
+returns
+
 
 
 
