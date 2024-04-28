@@ -211,4 +211,6 @@ returns
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
-sns.lineplot(data=returns, x='date', y='savings', hue='Portfolio')
+graph = sns.lineplot(data=returns, x='date', y='savings', hue='Portfolio')
+
+graph
