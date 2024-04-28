@@ -1,5 +1,5 @@
 import streamlit as st
-sidebar.backgroundColor="#0088FF"
+
 
 st.set_page_config(
     "Older, Smarter, Richer",
