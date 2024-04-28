@@ -188,7 +188,7 @@ for portfolio in returns['Portfolio'].unique():
             returns.at[index, 'savings'] = current_savings
         elif row['month'] == death_month:
             returns.at[index, 'savings'] = previous_savings
-            current_consumption = 1
+            current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
             current_utility = utility_consumption(current_consumption, household_size, risk_aversion) + utility_inheritance(inher_util, returns.at[index, 'savings'], inher_luxury, risk_aversion)
             returns.at[index, 'utility'] = current_utility + returns.at[index-1, 'utility']
             final_utility.append(returns.at[index, 'utility'])
