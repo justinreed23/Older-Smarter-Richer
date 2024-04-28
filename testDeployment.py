@@ -1,10 +1,15 @@
 import streamlit as st
 
 st.set_page_config(
-    "Portfolio Opt by WSB, Ported to Streamlit by Don Bowen",
-    "📊",
+    "Older, Smarter, Richer",
+    "📈",
     initial_sidebar_state="expanded",
     layout="wide",
+    menu_items={
+        "Report a Bug" : 'https://github.com/justinreed23/Older-Smarter-Richer/issues',
+        "About" : 'https://github.com/justinreed23/Older-Smarter-Richer/blob/main/README.md',
+        "Get Help" : 'https://media.tenor.com/mZZoOtDcouoAAAAM/stop-it-get-some-help.gif'
+    }
 )
 
 """
@@ -21,46 +26,12 @@ Itsa me, Justin!
 
 with st.sidebar:
 
-    # % chance lose, $ lose, % chance win, $win, CARA formula e, CARA formula V
-    qs ={1 :[.50,0,.50,10   ],
-         2 :[.50,0,.50,1000 ],
-         3 :[.90,0,.10,10   ],
-         4 :[.90,0,.10,1000 ],
-         5 :[.25,0,.75,100  ],
-         6 :[.75,0,.25,100  ]}    
-
-    """
-    ## Risk aversion assessment
-
-    ### Part 1: How much would you pay to enter the following lotteries?
-    """
-    ans = {}
-    for i in range(1,len(qs)+1):
-        rn = qs[i][0]*qs[i][1] + qs[i][2]*qs[i][3]
-        ans[i] = st.slider(f'{int(qs[i][0]*100)}% chance of \${qs[i][1]} and {int(qs[i][2]*100)}% chance of \${qs[i][3]}',
-                           0.0,rn,rn,0.1, key=i)
+    '''
+    ## Financial Assessment
     
-    risk_aversion = 0
-    for i in range(1,len(qs)+1):
-        
-        # quadratic util: mu - 0.5 * A * var
-        # here, set util = willing to pay, solve for A
-        
-        exp = qs[i][0]* qs[i][1]          +  qs[i][2]* qs[i][3]
-        var = qs[i][0]*(qs[i][1]-exp)**2  +  qs[i][2]*(qs[i][3]-exp)**2
-        
-        implied_a = 2*(exp-ans[i])/var
-           
-        risk_aversion += implied_a
-  
-    if risk_aversion < 0.000001: # avoid the float error when risk_aversion is too small
-       risk_aversion = 0.000001    
-       
-    f'''
-    #### Result: Using the survey, your risk aversion parameter is {risk_aversion:.3f}
-    ---
-    ### If you want, you can override that parameter here:
-    
+    ### Please answer the following questions about your financial situation
     '''
     
-    risk_aversion = st.number_input('Risk aversion parameter',0.000001,float(5),format='%0.2f',value=risk_aversion)
+    submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
+    income_growth = st.slider("What is your expected annual income growth rate?", min_value=0.0, max_value=10.0, value=5.0, step=0.1)
+    

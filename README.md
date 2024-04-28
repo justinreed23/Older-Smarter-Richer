@@ -2,6 +2,7 @@
  
 We do a little testing
 
-https://personalinvestmentdashboard.streamlit.app/
+
+https://older-smarter-richer.streamlit.app/
 
 there has been no work done besides making sure it can launch
