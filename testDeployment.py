@@ -16,17 +16,17 @@ st.set_page_config(
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find your Optimal Investment Portfolio for Retirement by filling out our Survey
 ## Project Purpose:
 In the modern investing landscape, the traditional approach of using a 60:40 stock-bond approach is prevalent. This strategy involves allocating 60% to stocks and 40% bonds at the beggining of one's life, then typically flips those weights after retirement. This aims to provide a simplified balance between growth potential from stocks and stability from bonds. Our goal was to come up with a more advanced model, which creates a survey for one to clarify their investing and retirement goals to find their optimal investing strategy without having to use unrefined methods or taking the time and effort to work with a professional advisor.  
-We hypothesise that different income levels and risk profiles favor different strategies. We use an equation to determine the optimal portfolio selection after the subject has outlined his/her self-described parameters. In addition to findinf the optimal investment portfolio, we will also display the cumulative returns over time that one may recieve using our optimized model. 
+We hypothesise that different income levels and risk profiles favor different strategies. We use an equation to determine the optimal portfolio selection after the subject has outlined his/her self-described parameters. In addition to finding the optimal investment portfolio, we will also display the cumulative returns over time that one may recieve using our optimized model. 
 ## Inspiration: 
 ## Caveats:
-Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results.
+Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
 ## About Us:
 # Reghan Hesser
 title: "Reghan Hesser" # Your name (or website title) here
 logo: "/images/headshot.jpg"
--Major: Finance 
--Year of Graduation: 2024
--Interests: Cooking, Skiing, Dancing 
+- Major: Finance 
+- Year of Graduation: 2024
+- Interests: Cooking, Skiing, Dancing 
 # Justin Reed
 # Maria Maragkelli
 
