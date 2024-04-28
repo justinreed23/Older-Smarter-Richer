@@ -1,11 +1,4 @@
 import streamlit as st
-[theme]
-base="light"
-primaryColor="#FF4B4B"
-backgroundColor="#FFFFFF"
-secondaryBackgroundColor="#F0F2F6"
-textColor="#262730"
-font="sans serif"
 sidebar.backgroundColor="#0088FF"
 
 st.set_page_config(
