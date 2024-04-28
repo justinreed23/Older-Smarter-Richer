@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-from datetime import datetime
+import datetime
 
 st.set_page_config(
     "Older, Smarter, Richer",
