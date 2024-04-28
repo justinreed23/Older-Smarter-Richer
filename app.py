@@ -164,10 +164,10 @@ for portfolio in returns['Portfolio'].unique():
     portfolio_data = returns[returns['Portfolio'] == portfolio]
     
     # Initialize previous savings
-    previous_savings = 0
-    initial_consumption = 0
-    current_consumption = 0
-    current_utility = 0
+    previous_savings = 0.0
+    initial_consumption = 0.0
+    current_consumption = 0.0
+    current_utility = 0.0
     
     
     # Iterate through each row in the portfolio data
