@@ -35,3 +35,5 @@ with st.sidebar:
     submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
     income_growth = st.slider("What is your expected annual income growth rate?", min_value=0.0, max_value=10.0, value=5.0, step=0.1)
     
+    
+# https://docs.streamlit.io/develop/api-reference/widgets/st.slider
