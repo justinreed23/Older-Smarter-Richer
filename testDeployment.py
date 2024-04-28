@@ -13,7 +13,7 @@ st.set_page_config(
 )
 
 """
-# CAPM Portfolio Optimization with Risk Aversion Adjustment: Find your Optimal Investment Portfolio for Retirement by filling out our Survey
+# CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
 ## Project Purpose:
 In the modern investing landscape, the traditional approach of using a 60:40 stock-bond approach is prevalent. This strategy involves allocating 60% to stocks and 40% bonds at the beggining of one's life, then typically flips those weights after retirement. This aims to provide a simplified balance between growth potential from stocks and stability from bonds. Our goal was to come up with a more advanced model, which creates a survey for one to clarify their investing and retirement goals to find their optimal investing strategy without having to use unrefined methods or taking the time and effort to work with a professional advisor.  
 We hypothesise that different income levels and risk profiles favor different strategies. We use an equation to determine the optimal portfolio selection after the subject has outlined his/her self-described parameters. In addition to finding the optimal investment portfolio, we will also display the cumulative returns over time that one may recieve using our optimized model. The data that we use to optimize a portfolio comes from 10 different ETFs we extracted from Yahoo Finance. We downloaded monthly returns for as long as they date back, then merge them by data into one wide dataset. Lastly, we randomly pulled rows to create a new 600 row dataframe (12 rows x 50 years) and converr that back to a tall dataframe.
