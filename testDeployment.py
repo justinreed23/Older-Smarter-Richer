@@ -41,7 +41,7 @@ with st.sidebar:
     
     inher_util = st.slider("What is your expected annual inheritance utilization?", min_value=0.0, max_value=100000.0, value=2000.0, step=0.1)
     save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=0.0, max_value=100.0, value=5.0, step=0.1)
-    consumption_rate= st.slider("What percent of your income do you plan to spend annually?", min_value=0.0, max_value=1.0, value=(0.5, step=0.1)
+    consumption_rate= st.slider("What percent of your income do you plan to spend annually?", min_value=0.0, max_value=1.0, value=0.5, step=0.1)
     inflation_rate = st.slider("What is your expected annual income growth rate?", min_value=0.0, max_value=10.0, value=5.0, step=0.1)
    
 
