@@ -46,14 +46,16 @@ with st.sidebar:
    
 
     risk_aversion_options = ["Low", "Medium", "High"]
-    selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
-    # Assigning values based on user selection
-    if selected_risk_aversion == "Low":
-        risk_aversion = (0.0, 3.0)  # Assign a specific value for low risk aversion
-        elif selected_risk_aversion == "Medium":
-        risk_aversion = (4.0, 6.0)  # Assign a specific value for medium risk aversion
-        else:
-        risk_aversion =(7.0, 10.0)  # Assign a specific value for high risk aversion
+selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
+
+# Assigning values based on user selection
+if selected_risk_aversion == "Low":
+    risk_aversion = (0.0, 3.0)  # Assign a specific value for low risk aversion
+elif selected_risk_aversion == "Medium":
+    risk_aversion = (4.0, 6.0)  # Assign a specific value for medium risk aversion
+else:
+    risk_aversion = (7.0, 10.0)  # Assign a specific value for high risk aversion
+
 
 
 # https://docs.streamlit.io/develop/api-reference/widgets/st.slider
