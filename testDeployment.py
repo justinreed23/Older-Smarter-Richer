@@ -34,10 +34,10 @@ with st.sidebar:
     
     submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
     income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=0.0, max_value=100.0, value=10.0, step=0.1)
-    start_savings = st.number_input("At what age did you start saving?", min_value=18.0, max_value=50.0)
-    retirement_start = st.number_input("At what age will you retire?", min_value=50.0, max_value=80.0)
-    death_year = st.number_input("At what age do you expect you will pass away?", min_value=50.0, max_value=105.0)
-    household_size = st.number_input("Number of people in household at time of retirement?", min_value=1.0, value=10.0)
+    start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50)
+    retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80)
+    death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=105)
+    household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
     
     inher_util = st.slider("What is your expected annual inheritance utilization?", min_value=0.0, max_value=100000.0, value=2000.0, step=0.1)
     save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=0.0, max_value=100.0, value=5.0, step=0.1)
