@@ -96,29 +96,7 @@ death_month = death_month - month_start_savings
 
 
 
-rng = np.random.default_rng(123)
-
-start_year = 1950
-end_year = 2050
-portfolios = ["First", "Second", "Third", "Fourth", "Fifth"]
-portfolios_list = []
-dates_list = []
-
-
-for portfolio in portfolios:
-    for year in range(start_year, end_year + 1):
-        for month in range(1, 13):
-            date = datetime.date(year, month, 1)
-            dates_list.append(date)
-            portfolios_list.append(portfolio)
-
-random_returns = rng.uniform(low=0, high=(0.10 / 12), size=len(dates_list))
-
-
-returns = pd.DataFrame(
-    {"Portfolio": portfolios_list, "date": dates_list, "ret": random_returns}
-)
-
+returns = pd.read_csv('inputs/fake_returns.csv')
 
 returns['income'] = 0.0
 
@@ -221,47 +199,78 @@ max_key = max(final_utility, key=final_utility.get)
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
+tabs = ['Overview'] + list(returns['Portfolio'].unique())
 
-fig = go.Figure()
+tabOverview, tab0, tab1, tab2, tab3, tab4 = st.tabs(tabs)
 
-for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
-    if portfolio_name == max_key:
-        fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
-        fig.add_annotation(
-            x=returns.loc[returns['month'] == month_retirement_start, 'month'].iloc[0],
-            y=returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0],
-            text=f"{portfolio_name} is the optimal portfolio<br>"
-             f"Savings at Retirement Start: ${returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
-             f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-             f"Initial Monthly Consumption: ${initial_consumption:,.2f}",
-            showarrow=True,
-            arrowhead=1,
-            ax=0,
-            ay=-60,
-            font=dict(color="black"),
-            align="left",
-            bordercolor="black",
-            borderwidth=1,
-            borderpad=4,
-            bgcolor="white"
-        )
-    else:
-        fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+with tabOverview:
+    fig = go.Figure()
 
-fig.update_layout(
-    xaxis_title="Month",
-    yaxis_title="Savings",
-    width=1000,
-    height=600,
-    template="plotly_white"
-)
-fig.update_layout(
-    title={
-        'text': "Retirement Portfolios over time",
-        'x': 0.5,
-        'xanchor': 'center',
-        'yanchor': 'top'
-    }
-)
+    for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
+        if portfolio_name == max_key:
+            fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+            fig.add_annotation(
+                x=returns.loc[returns['month'] == month_retirement_start, 'month'].iloc[0],
+                y=returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0],
+                text=f"{portfolio_name} is the optimal portfolio<br>"
+                f"Savings at Retirement Start: ${returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
+                f"Initial Monthly Consumption: ${initial_consumption:,.2f}",
+                showarrow=True,
+                arrowhead=1,
+                ax=0,
+                ay=-60,
+                font=dict(color="black"),
+                align="left",
+                bordercolor="black",
+                borderwidth=1,
+                borderpad=4,
+                bgcolor="white"
+            )
+        else:
+            fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
 
-st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': "Retirement Portfolios over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+
+with tab0:
+    fig = go.Figure()
+    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[0]).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[0], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    
+with tab1:
+    fig = go.Figure()
+    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[1]).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[1], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab2:
+    fig = go.Figure()
+    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[2]).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[2], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab3:
+    fig = go.Figure()
+    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[3]).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[3], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab4:
+    fig = go.Figure()
+    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[4]).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[4], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
