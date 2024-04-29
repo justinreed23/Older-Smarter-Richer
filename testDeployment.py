@@ -215,7 +215,7 @@ with tabOverview:
                 text=f"{portfolio_name} is the optimal portfolio<br>"
                 f"Savings at Retirement Start: ${returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
                 f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-                f"Initial Monthly Consumption: ${initial_consumption:,.2f}",
+                f"Initial Annual Consumption: ${initial_consumption*12:,.2f}",
                 showarrow=True,
                 arrowhead=1,
                 ax=0,
@@ -250,27 +250,107 @@ with tabOverview:
 
 with tab0:
     fig = go.Figure()
-    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[0]).drop(columns=['Unnamed: 0'])
-    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[0], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    current_portfolio = list(returns['Portfolio'].unique())[0]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     
 with tab1:
     fig = go.Figure()
-    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[1]).drop(columns=['Unnamed: 0'])
-    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[1], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    current_portfolio = list(returns['Portfolio'].unique())[1]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
 with tab2:
     fig = go.Figure()
-    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[2]).drop(columns=['Unnamed: 0'])
-    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[2], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    current_portfolio = list(returns['Portfolio'].unique())[2]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
 with tab3:
     fig = go.Figure()
-    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[3]).drop(columns=['Unnamed: 0'])
-    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[3], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    current_portfolio = list(returns['Portfolio'].unique())[3]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
 with tab4:
     fig = go.Figure()
-    spec_portfolio = returns.groupby('Portfolio').get_group(list(returns['Portfolio'].unique())[4]).drop(columns=['Unnamed: 0'])
-    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=list(returns['Portfolio'].unique())[4], line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    current_portfolio = list(returns['Portfolio'].unique())[4]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio).drop(columns=['Unnamed: 0'])
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
