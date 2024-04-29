@@ -4,6 +4,7 @@ import pandas as pd
 import datetime
 import math
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 st.set_page_config(
@@ -100,11 +101,13 @@ with st.sidebar:
     else:
         risk_aversion = 3.94 
 
-    inher_util_options = ["Low", "Medium", "High"]
+    inher_util_options = ["None", "Low", "Medium", "High"]
     selected_inher_util = st.selectbox("Select your inheritance utility level:", inher_util_options)
 
 # Assigning values based on user selection
-    if selected_inher_util == "Low":
+    if selected_inher_util == "None":
+        inher_util = 0
+    elif selected_inher_util == "Low":
         inher_util = 2260
     elif selected_risk_aversion == "Medium":
         inher_util = 2360
@@ -259,3 +262,14 @@ returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time", width=1000, height=600)
 
 st.plotly_chart(fig, use_container_width=True)
+
+
+fig2 = go.Figure()
+
+for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
+    if portfolio_name == max_key:
+        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    else:
+        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+
+st.plotly_chart(fig2, use_container_width=True,theme="streamlit")
