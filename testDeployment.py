@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pandas as pd
-import datetime
 import math
 import plotly.express as px
 import plotly.graph_objects as go
@@ -190,6 +189,7 @@ for portfolio in returns['Portfolio'].unique():
 
 max_key = max(final_utility, key=final_utility.get)
 
+st.write(returns[returns['month'] == death_month+1]['utility'].round(20))
 
 #############################################
 # start: plot
@@ -262,7 +262,7 @@ with tab0:
     )
     fig.update_layout(
         title={
-            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'text': f"{current_portfolio} as chosen Portfolio over time<br>",
             'x': 0.5,
             'xanchor': 'center',
             'yanchor': 'top'
