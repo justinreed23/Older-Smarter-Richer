@@ -85,11 +85,11 @@ with st.sidebar:
     income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1.0, max_value=10.0, value=3.0, step=0.1) / 100
     start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50)
     retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80)
-    death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=100)
+    death_year = st.number_input("At what age do you expect you will pass away?", min_value=retirement_start, max_value=100)
     household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
     
-    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=80.0, value=10.0, step=0.1) / 100
-    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement? General investment advice is 4%", min_value=1.0, max_value=40.0, value=4.0, step=0.01) / 100
+    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=40.0, value=10.0, step=0.1) / 100
+    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement? General investment advice is 4%", min_value=1.0, max_value=20.0, value=4.0, step=0.1) / 100
     risk_aversion_options = ["Low", "Medium", "High"]
     selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
 
@@ -271,7 +271,35 @@ fig2 = go.Figure()
 for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
     if portfolio_name == max_key:
         fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+        fig2.add_annotation(
+            x=portfolio_frame["month"].iloc[-1],
+            y=portfolio_frame["savings"].iloc[-1],
+            text=f"{portfolio_name} is the optimal portfolio<br>"
+             f"Savings at Retirement Start: ${returns.loc[returns['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
+             f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
+             f"Initial Monthly Consumption: ${initial_consumption:,.2f}",
+            showarrow=True,
+            arrowhead=1,
+            ax=0,
+            ay=-60
+        )
     else:
         fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
 
-st.plotly_chart(fig2, use_container_width=True,theme="streamlit")
+fig2.update_layout(
+    xaxis_title="Month",
+    yaxis_title="Savings",
+    width=1000,
+    height=600,
+    template="plotly_white"
+)
+fig2.update_layout(
+    title={
+        'text': "Retirement Portfolios over time",
+        'x': 0.5,
+        'xanchor': 'center',
+        'yanchor': 'top'
+    }
+)
+
+st.plotly_chart(fig2, use_container_width=True, theme="streamlit")
