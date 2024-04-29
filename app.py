@@ -5,6 +5,7 @@ import datetime
 import math
 import plotly.express as px
 
+
 st.set_page_config(
     "Older, Smarter, Richer",
     "📈",
@@ -16,6 +17,7 @@ st.set_page_config(
         "Get Help" : 'https://media.tenor.com/mZZoOtDcouoAAAAM/stop-it-get-some-help.gif'
     }
 )
+
 
 """
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
@@ -61,7 +63,6 @@ logo: "/images/headshot.jpg"
 """
 
 
-
 #############################################
 # start: sidebar
 #############################################
@@ -75,14 +76,14 @@ with st.sidebar:
     '''
     
     submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
-    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=0.1, max_value=100.0, value=10.0, step=0.1) / 100
+    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1.0, max_value=50.0, value=5.0, step=0.1) / 100
     start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50)
     retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80)
     death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=105)
     household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
     
-    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=0.1, max_value=100.0, value=5.0, step=0.1) / 100
-    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement?", min_value=0.0, max_value=0.08, value=0.03, step=0.01)
+    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=80.0, value=5.0, step=0.1) / 100
+    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement?", min_value=1.0, max_value=40.0, value=5.0, step=0.01) / 100
     risk_aversion_options = ["Low", "Medium", "High"]
     selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
 
@@ -115,6 +116,13 @@ monthly_growth = 1+ (income_growth/12)
 month_start_savings = start_savings*12
 month_retirement_start = retirement_start*12
 death_month = death_year*12
+
+# this is probably shitty, reason I am doing this is we dont have infinite data and I dont want to fix the rest of my code
+month_start_savings = 0
+month_retirement_start = month_retirement_start - month_start_savings
+death_month = death_month - month_start_savings
+
+
 # maybe I should let them option this
 inflation = 0.02
 inflation_rate = inflation/12
@@ -211,10 +219,15 @@ for portfolio in returns['Portfolio'].unique():
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
             if previous_savings <= current_consumption:
                 current_consumption = previous_savings
-            current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
-            current_utility = utility_consumption(current_consumption, household_size, risk_aversion)
-            returns.at[index, 'utility'] = current_utility + returns.at[index-1, 'utility']
-            returns.at[index, 'savings'] = current_savings
+                current_utility = -10000000000000.0
+                current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
+                returns.at[index, 'utility'] = current_utility
+                returns.at[index, 'savings'] = current_savings
+            else:
+                current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
+                current_utility = utility_consumption(current_consumption, household_size, risk_aversion)
+                returns.at[index, 'utility'] = current_utility + returns.at[index-1, 'utility']
+                returns.at[index, 'savings'] = current_savings
         elif row['month'] == death_month:
             returns.at[index, 'savings'] = previous_savings
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
