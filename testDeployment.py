@@ -44,7 +44,7 @@ with st.sidebar:
     start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50, value=25)
     retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80,value=65)
     death_year = st.number_input("At what age do you expect you will pass away?", min_value=retirement_start, max_value=100,value=85)
-    household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
+    household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, max_value=10, value=2)
     
     save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=40.0, value=10.0, step=0.1) / 100
     consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement? General investment advice is 4%", min_value=1.0, max_value=20.0, value=4.0, step=0.1) / 100
