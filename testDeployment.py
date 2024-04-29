@@ -35,8 +35,8 @@ st.latex(r'''
 """
 1. We will be using the utility equation from [Anarkulova, Cederburg, O'Doherty](Related_reading/Beyond_Status_Quo.pdf) (2023) to determine optimal portfolio selection
 2. Variable Definitions
-   1. $C$ is defined as consumption in dollars
-   2. $H$ is number of people in household
+   1. $C$ is defined as consumption in dollars during retirement
+   2. $H$ is number of people in household during retirement
    3. $t$ is time since started saving (in months)
    4. $\gamma$ is risk aversion
       1. "Normal" is $3.82$
@@ -80,15 +80,15 @@ with st.sidebar:
     ### Please answer the following questions about your financial situation
     '''
     
-    submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
-    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1.0, max_value=50.0, value=5.0, step=0.1) / 100
+    submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0,max_value=10000000 value=65000)
+    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1.0, max_value=10.0, value=3.0, step=0.1) / 100
     start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50)
     retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80)
-    death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=105)
+    death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=100)
     household_size = st.number_input("Number of people in household at time of retirement?", min_value=1, value=10)
     
-    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=80.0, value=5.0, step=0.1) / 100
-    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement?", min_value=1.0, max_value=40.0, value=5.0, step=0.01) / 100
+    save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=80.0, value=10.0, step=0.1) / 100
+    consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement? General investment advice is 4%", min_value=1.0, max_value=40.0, value=4.0, step=0.01) / 100
     risk_aversion_options = ["Low", "Medium", "High"]
     selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
 

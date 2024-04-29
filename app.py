@@ -4,6 +4,7 @@ import pandas as pd
 import datetime
 import math
 import plotly.express as px
+import plotly.graph_objects as go
 
 
 st.set_page_config(
@@ -24,10 +25,11 @@ st.set_page_config(
 ## Project Purpose:
 In the modern investing landscape, the traditional approach of using a 60:40 stock-bond approach is prevalent. This strategy involves allocating 60% to stocks and 40% bonds at the beggining of one's life, then typically flips those weights after retirement. This aims to provide a simplified balance between growth potential from stocks and stability from bonds. Our goal was to come up with a more advanced model, which creates a survey for one to clarify their investing and retirement goals to find their optimal investing strategy without having to use unrefined methods or taking the time and effort to work with a professional advisor.  
 We hypothesise that different income levels and risk profiles favor different strategies. We use an equation to determine the optimal portfolio selection after the subject has outlined his/her self-described parameters. In addition to finding the optimal investment portfolio, we will also display the cumulative returns over time that one may recieve using our optimized model. The data that we use to optimize a portfolio comes from 10 different ETFs we extracted from Yahoo Finance. We downloaded monthly returns for as long as they date back, then merge them by data into one wide dataset. Lastly, we randomly pulled rows to create a new 600 row dataframe (12 rows x 50 years) and converr that back to a tall dataframe.
-This is the equation we use: $$U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-\gamma}}{1-\gamma} + \theta{\frac{(B+k)^{1-\gamma}}{1-\gamma}}$$
+This is the equation we use:
+"""
 
-$$U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-\gamma}}{1-\gamma} + \theta{\frac{(B+k)^{1-\gamma}}{1-\gamma}}$$
 
+"""
 1. We will be using the utility equation from [Anarkulova, Cederburg, O'Doherty](Related_reading/Beyond_Status_Quo.pdf) (2023) to determine optimal portfolio selection
 2. Variable Definitions
    1. $C$ is defined as consumption in dollars
@@ -61,11 +63,6 @@ logo: "/images/headshot.jpg"
 
 
 """
-
-
-st.latex(r'''
-         U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-\gamma}}{1-\gamma} + \theta{\frac{(B+k)^{1-\gamma}}{1-\gamma}}
-         ''')
 
 #############################################
 # start: sidebar
@@ -247,7 +244,7 @@ for portfolio in returns['Portfolio'].unique():
         previous_savings = current_savings
 
 
-returns
+max_key = max(final_utility, key=final_utility.get)
 
 
 #############################################
@@ -260,3 +257,19 @@ returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time")
 
 st.plotly_chart(fig, use_container_width=False)
+
+
+#############################################
+# Using Plotly Graph objects because I want to kill myself
+#############################################
+
+
+fig2 = go.Figure()
+
+for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
+    if portfolio_name == max_key:
+        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    else:
+        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+
+st.plotly_chart(fig2, use_container_width=True,theme="streamlit")
