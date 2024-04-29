@@ -46,7 +46,7 @@ $$U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-
    9.  $T^{max}$ is date of death.
 9.  Saving assumption is 10% of income if income is $>15000$
 10. Ask respondent for expected income growth(?)
-## Inspiration: 
+## Inspiration: Our work was inspired by "Beyond the Status Quo: A Crititcal Assessment of Lifecycle Investment Advice"
 ## Caveats:
 Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
 ## About Us:
@@ -249,3 +249,16 @@ returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time")
 
 st.plotly_chart(fig, use_container_width=False)
+
+returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
+
+fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time", width=1000, height=600)
+
+# Wrap the plotly chart in a div tag and apply CSS to center it
+centered_html = f"""
+    <div style="display: flex; justify-content: center;">
+        {fig.to_html(include_plotlyjs='cdn')}
+    </div>
+"""
+
+st.markdown(centered_html, unsafe_allow_html=True)
