@@ -46,7 +46,7 @@ $$U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-
    9.  $T^{max}$ is date of death.
 9.  Saving assumption is 10% of income if income is $>15000$
 10. Ask respondent for expected income growth(?)
-## Inspiration: 
+## Inspiration: Our work was inspired by "Beyond the Status Quo: A Crititcal Assessment of Lifecycle Investment Advice"
 ## Caveats:
 Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
 ## About Us:
