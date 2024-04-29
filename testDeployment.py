@@ -52,19 +52,25 @@ st.latex(r'''
    9.  $T^{max}$ is date of death.
 9.  Saving assumption is 10% of income if income is $>15000$
 10. Ask respondent for expected income growth(?)
-## Inspiration: Our work was inspired by "Beyond the Status Quo: A Crititcal Assessment of Lifecycle Investment Advice"
+## Inspiration: 
+Our work was inspired by "Beyond the Status Quo: A Crititcal Assessment of Lifecycle Investment Advice." In this paper>>>
 ## Caveats:
 Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
 ## About Us:
 ### Reghan Hesser
-title: "Reghan Hesser" # Your name (or website title) here
+title: "Reghan Hesser" 
 logo: "/images/headshot.jpg"
 - Major: Finance 
 - Year of Graduation: 2024
 - Interests: Cooking, Skiing, Dancing 
 ### Justin Reed
+- Major:
+-Year of Graduation: 2024
+_ Interests: 
 ### Maria Maragkelli
-
+- Major:
+-Year of Graduation: 2024
+_ Interests: 
 
 """
 
