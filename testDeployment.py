@@ -66,11 +66,11 @@ with st.sidebar:
     if selected_inher_util == "None":
         inher_util = 0
     elif selected_inher_util == "Low":
-        inher_util = 2260
+        inher_util = 1000
     elif selected_risk_aversion == "Medium":
         inher_util = 2360
     else:
-        inher_util = 2460
+        inher_util = 6000
 
 
 #############################################
@@ -86,6 +86,12 @@ death_month = death_year*12
 inflation = 0.02
 inflation_rate = inflation/12
 inher_luxury = 490000
+
+# this is probably shitty, reason I am doing this is we dont have infinite data and I dont want to fix the rest of my code
+month_start_savings = 0
+month_retirement_start = month_retirement_start - month_start_savings
+death_month = death_month - month_start_savings
+
 
 
 
@@ -232,7 +238,12 @@ for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
             arrowhead=1,
             ax=0,
             ay=-60,
-            font=dict(color="black")
+            font=dict(color="black"),
+            align="left",
+            bordercolor="black",
+            borderwidth=1,
+            borderpad=4,
+            bgcolor="white"
         )
     else:
         fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
