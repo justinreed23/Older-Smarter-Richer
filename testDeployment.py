@@ -268,6 +268,18 @@ with tab0:
             'yanchor': 'top'
         }
     )
+    fig.add_annotation(
+        x=0,
+        y=spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0],
+        text="Hello!",
+        showarrow=False,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white"
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     
 with tab1:
