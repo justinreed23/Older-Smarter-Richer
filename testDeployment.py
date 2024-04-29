@@ -249,7 +249,8 @@ returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time")
 
 st.plotly_chart(fig, use_container_width=False)
-
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time", width=1000, height=600)
+
+st.plotly_chart(fig, use_container_width=False)
