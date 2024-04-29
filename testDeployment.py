@@ -189,7 +189,6 @@ for portfolio in returns['Portfolio'].unique():
 
 max_key = max(final_utility, key=final_utility.get)
 
-st.write(returns[returns['month'] == death_month+1]['utility'].round(20))
 
 #############################################
 # start: plot
