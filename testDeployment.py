@@ -231,7 +231,8 @@ for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
             showarrow=True,
             arrowhead=1,
             ax=0,
-            ay=-60
+            ay=-60,
+            font=dict(color="black")
         )
     else:
         fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
