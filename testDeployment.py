@@ -76,7 +76,7 @@ with st.sidebar:
     '''
     
     submitted_income = st.number_input("What is your annual income?(Max $10mil)", min_value=0, value=10000000)
-    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1, max_value=50, value=5, step=0.1) / 100
+    income_growth = st.slider("What is your expected annual income growth rate in percentage?", min_value=1.0, max_value=50.0, value=5.0, step=0.1) / 100
     start_savings = st.number_input("At what age did you start saving?", min_value=18, max_value=50)
     retirement_start = st.number_input("At what age will you retire?", min_value=50, max_value=80)
     death_year = st.number_input("At what age do you expect you will pass away?", min_value=50, max_value=105)
