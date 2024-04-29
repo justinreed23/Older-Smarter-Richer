@@ -253,12 +253,3 @@ st.plotly_chart(fig, use_container_width=False)
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
 fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time", width=1000, height=600)
-
-# Wrap the plotly chart in a div tag and apply CSS to center it
-centered_html = f"""
-    <div style="display: flex; justify-content: center;">
-        {fig.to_html(include_plotlyjs='cdn')}
-    </div>
-"""
-
-st.markdown(centered_html, unsafe_allow_html=True)
