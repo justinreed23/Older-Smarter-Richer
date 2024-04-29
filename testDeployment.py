@@ -40,22 +40,20 @@ st.latex(r'''
    2. $H$ is number of people in household during retirement
    3. $t$ is time since started saving (in months)
    4. $\gamma$ is risk aversion
-      1. "Normal" is $3.82$
+      1. The medium value is $3.84$
       2. We will adjust this based on respondents self-described risk aversion
-   5. $\theta$ is inheritance utility intensity
-      1. Normal is $2360 * 12^{\gamma}$
+   5. $θ$ is inheritance utility intensity
+      1. The medium value is $2360 multiplied by 12^{\gamma}$ to adjust for monthly returns
       2. We will adjust this based on respondents self-described inheritance goals
    6. $B$ is inheritance amount
    7. $k$ is the extent to which inheritance is viewed as a luxury good
       1. Normal is $490,000
    8. $\Delta$ is the time between retirement age and savings age in months
    9.  $T^{max}$ is date of death.
-9.  Saving assumption is 10% of income if income is $>15000$
-10. Ask respondent for expected income growth(?)
 ## Inspiration: 
-Our work was inspired by "Beyond the Status Quo: A Crititcal Assessment of Lifecycle Investment Advice." In this paper>>>
+Our work was inspired by "Beyond the Status Quo: A Critical Assessment of Lifecycle Investment Advice." In this paper, the authors discuss the limitations of the traditional 60:40 stock-bond approach and propose a new model that takes into account the individual's risk aversion and inheritance goals. However their study focuses on the average investor using a simulation of many possible American lifestyles. We wanted to take this a step further and create a model that is personalized to the individual investor.
 ## Caveats:
-Our models for the ETFs are not particulary robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past arounf 40 years. Ourmodel does not account for irregularities in the economic landscape.
+Our models for the ETFs are not particularly robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past around 40 years. Our model does not account for irregularities in the economic landscape.
 ## About Us:
 ### Reghan Hesser
 title: "Reghan Hesser" 
@@ -114,7 +112,7 @@ with st.sidebar:
     if selected_inher_util == "None":
         inher_util = 0
     elif selected_inher_util == "Low":
-        inher_util = 2260
+        inher_util = 0
     elif selected_risk_aversion == "Medium":
         inher_util = 2360
     else:
