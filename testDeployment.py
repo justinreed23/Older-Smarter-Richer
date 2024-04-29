@@ -65,12 +65,12 @@ logo: "/images/headshot.jpg"
 - Interests: Cooking, Skiing, Dancing 
 ### Justin Reed
 - Major:
--Year of Graduation: 2024
-_ Interests: 
+- Year of Graduation: 2024
+- Interests: 
 ### Maria Maragkelli
 - Major:
--Year of Graduation: 2024
-_ Interests: 
+- Year of Graduation: 2024
+- Interests: 
 
 """
 
