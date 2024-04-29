@@ -212,10 +212,15 @@ for portfolio in returns['Portfolio'].unique():
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
             if previous_savings <= current_consumption:
                 current_consumption = previous_savings
-            current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
-            current_utility = utility_consumption(current_consumption, household_size, risk_aversion)
-            returns.at[index, 'utility'] = current_utility + returns.at[index-1, 'utility']
-            returns.at[index, 'savings'] = current_savings
+                current_utility = -10000000000000.0
+                current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
+                returns.at[index, 'utility'] = current_utility
+                returns.at[index, 'savings'] = current_savings
+            else:
+                current_savings = (previous_savings - current_consumption) * (1 + row['ret'])
+                current_utility = utility_consumption(current_consumption, household_size, risk_aversion)
+                returns.at[index, 'utility'] = current_utility + returns.at[index-1, 'utility']
+                returns.at[index, 'savings'] = current_savings
         elif row['month'] == death_month:
             returns.at[index, 'savings'] = previous_savings
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
