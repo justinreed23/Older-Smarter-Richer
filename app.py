@@ -64,7 +64,7 @@ logo: "/images/headshot.jpg"
 
 
 st.latex('''
-         U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \frac{(C_{t}/\sqrt{H_{t}})^{1-\gamma}}{1-\gamma} + \theta{\frac{(B+k)^{1-\gamma}}{1-\gamma}}
+         U(C,B) = \displaystyle\sum_{t=\Delta}^{T_{max}} \_frac{(C_{t}/\sqrt{H_{t}})^{1-\gamma}}{1-\gamma} + \_theta{\_frac{(B+k)^{1-\gamma}}{1-\gamma}}
          ''')
 
 #############################################
