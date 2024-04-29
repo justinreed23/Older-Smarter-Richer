@@ -196,6 +196,7 @@ returns['savings'] = 0.0
 returns['utility'] = 0.0
 
 final_utility = {}
+consumption_dict = {}
 
 for portfolio in returns['Portfolio'].unique():
     # Filter the DataFrame by portfolio
@@ -216,6 +217,7 @@ for portfolio in returns['Portfolio'].unique():
             current_utility = utility_consumption(initial_consumption, household_size, risk_aversion)
             returns.at[index, 'savings'] = current_savings
             returns.at[index, 'utility'] = current_utility
+            consumption_dict[portfolio] = initial_consumption
         if row['income'] == 0.0 and row['month'] > month_retirement_start and row['month'] < death_month:
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
             if previous_savings <= current_consumption:
@@ -244,7 +246,7 @@ for portfolio in returns['Portfolio'].unique():
         previous_savings = current_savings
 
 
-returns
+max_key = max(final_utility, key=final_utility.get)
 
 
 #############################################
