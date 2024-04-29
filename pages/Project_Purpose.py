@@ -1,3 +1,5 @@
+import streamlit as st
+
 """
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
 ## Project Purpose:
