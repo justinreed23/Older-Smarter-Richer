@@ -5,16 +5,6 @@ import datetime
 import math
 import plotly.express as px
 
-#############################################
-# start: plot
-#############################################
-
-
-returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
-
-fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time")
-
-st.plotly_chart(fig, use_container_width=False)
 
 st.set_page_config(
     "Older, Smarter, Richer",
