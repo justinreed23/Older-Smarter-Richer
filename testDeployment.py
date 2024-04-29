@@ -99,11 +99,11 @@ with st.sidebar:
 
 # Assigning values based on user selection
     if selected_risk_aversion == "Low":
-        risk_aversion = 3.74
+        risk_aversion = 2.84
     elif selected_risk_aversion == "Medium":
         risk_aversion = 3.84
     else:
-        risk_aversion = 3.94 
+        risk_aversion = 4.84
 
     inher_util_options = ["None", "Low", "Medium", "High"]
     selected_inher_util = st.selectbox("Select your inheritance utility level:", inher_util_options)
@@ -112,7 +112,7 @@ with st.sidebar:
     if selected_inher_util == "None":
         inher_util = 0
     elif selected_inher_util == "Low":
-        inher_util = 0
+        inher_util = 2260
     elif selected_risk_aversion == "Medium":
         inher_util = 2360
     else:
@@ -192,7 +192,7 @@ def utility_consumption(consumption, household_size, risk_aversion):
 def utility_inheritance(inher_util, inheritance_amount, inher_luxury, risk_aversion):
     adj_inher_util = inher_util*(12**risk_aversion)
     factor_risk = 1-risk_aversion
-    equation = (((inheritance_amount/inher_luxury)**factor_risk) / factor_risk) * adj_inher_util
+    equation = (((inheritance_amount+inher_luxury)**factor_risk) / factor_risk) * adj_inher_util
     return equation
 
 
@@ -261,17 +261,13 @@ max_key = max(final_utility, key=final_utility.get)
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
 
-fig = px.line(returns, x="date", y="savings", color="Portfolio", title="Savings Over Time", width=1000, height=600)
 
-st.plotly_chart(fig, use_container_width=True)
-
-
-fig2 = go.Figure()
+fig = go.Figure()
 
 for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
     if portfolio_name == max_key:
-        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
-        fig2.add_annotation(
+        fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+        fig.add_annotation(
             x=portfolio_frame["month"].iloc[-1],
             y=portfolio_frame["savings"].iloc[-1],
             text=f"{portfolio_name} is the optimal portfolio<br>"
@@ -284,16 +280,16 @@ for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
             ay=-60
         )
     else:
-        fig2.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+        fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='rgba(128, 128, 128, 0.5)'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
 
-fig2.update_layout(
+fig.update_layout(
     xaxis_title="Month",
     yaxis_title="Savings",
     width=1000,
     height=600,
     template="plotly_white"
 )
-fig2.update_layout(
+fig.update_layout(
     title={
         'text': "Retirement Portfolios over time",
         'x': 0.5,
@@ -302,4 +298,4 @@ fig2.update_layout(
     }
 )
 
-st.plotly_chart(fig2, use_container_width=True, theme="streamlit")
+st.plotly_chart(fig, use_container_width=True, theme="streamlit")
