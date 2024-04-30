@@ -83,16 +83,22 @@ with st.sidebar:
     
     save_rate = st.slider("What percent of your income do you expect to save annually?", min_value=5.0, max_value=40.0, value=10.0, step=0.1) / 100
     consumption_rate= st.slider("What percent of your income do you plan to spend annually in retirement? General investment advice is 4%", min_value=1.0, max_value=20.0, value=4.0, step=0.1) / 100
-    risk_aversion_options = ["Low", "Medium", "High"]
+    risk_aversion_options = ["Very Low","Low", "Medium", "High"]
     selected_risk_aversion = st.selectbox("Select your risk aversion level:", risk_aversion_options)
 
 # Assigning values based on user selection
     if selected_risk_aversion == "Low":
         risk_aversion = 2.84
+        acceptable_drawdown = 0.3
     elif selected_risk_aversion == "Medium":
         risk_aversion = 3.84
+        acceptable_drawdown = 0.2
+    elif selected_risk_aversion == "Very Low":
+        risk_aversion = 1.84
+        acceptable_drawdown = 0.5
     else:
         risk_aversion = 4.84
+        acceptable_drawdown = 0.10
 
     inher_util_options = ["None", "Low", "Medium", "High"]
     selected_inher_util = st.selectbox("Select your inheritance utility level:", inher_util_options)
@@ -180,6 +186,9 @@ returns['utility'] = 0.0
 # create dictionaries to store consumption and utility values at t=death
 final_utility = {}
 consumption_dict = {}
+drawdown_dict = {}
+for portfolio in returns['Portfolio'].unique():
+    drawdown_dict[portfolio] = True
 
 
 # this is where the magic happens
@@ -192,6 +201,7 @@ for portfolio in returns['Portfolio'].unique():
     initial_consumption = 0.0
     current_consumption = 0.0
     current_utility = 0.0
+    max_savings = 0.0
     
     
     # Iterate through each row in the portfolio data
@@ -209,7 +219,6 @@ for portfolio in returns['Portfolio'].unique():
             returns.at[index, 'utility'] = current_utility
             # find add initial consumption to our consumption dict
             consumption_dict[portfolio] = initial_consumption
-            
         # this is the if scenario for when user is retired
         if row['income'] == 0.0 and row['month'] > month_retirement_start and row['month'] < death_month:
             current_consumption = initial_consumption * ((1+inflation_rate)**(row['month']-month_retirement_start))
@@ -242,6 +251,11 @@ for portfolio in returns['Portfolio'].unique():
         # this is where user is working, not spending money from retirement account
         else:
             current_savings = save_rate * row['income'] + previous_savings * (1 + row['ret'])
+            if current_savings > max_savings:
+                max_savings = current_savings
+            drawdown = 1-(current_savings/max_savings)
+            if drawdown > acceptable_drawdown:
+                drawdown_dict[portfolio] = False
             returns.at[index, 'savings'] = current_savings
         # Update previous savings
         previous_savings = current_savings
@@ -254,6 +268,9 @@ max_key = max(final_utility, key=final_utility.get)
 # start: plot
 #############################################
 
+filtered_portfolios = {k: final_utility[k] for k in final_utility if drawdown_dict[k] == True}
+
+st.write(filtered_portfolios)
 
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
@@ -266,7 +283,7 @@ with tabOverview:
     fig = go.Figure()
 
     for portfolio_name, portfolio_frame in returns.groupby("Portfolio"):
-        if portfolio_name == max_key:
+        if portfolio_name == max_key and drawdown_dict[portfolio_name] == True:
             fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
             fig.add_annotation(
                 x=portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'month'].iloc[0],
@@ -274,11 +291,54 @@ with tabOverview:
                 text=f"{portfolio_name} is the optimal portfolio<br>"
                 f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
                 f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-                f"Initial Annual Consumption: ${initial_consumption*12:,.2f}",
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"This portfolio also meets your risk aversion criteria",
                 showarrow=True,
                 arrowhead=1,
                 ax=0,
                 ay=-60,
+                font=dict(color="black"),
+                align="left",
+                bordercolor="black",
+                borderwidth=1,
+                borderpad=4,
+                bgcolor="white"
+            )
+        elif portfolio_name == max_key:
+            fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='red'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+            fig.add_annotation(
+                x=portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'month'].iloc[0],
+                y=portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0],
+                text=f"{portfolio_name} is the optimal portfolio but it does not meet your risk aversion parameters<br>"
+                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"However this Portfolio does not meet your risk aversion criteria",
+                showarrow=True,
+                arrowhead=1,
+                ax=-150,
+                ay=-300,
+                font=dict(color="black"),
+                align="left",
+                bordercolor="black",
+                borderwidth=1,
+                borderpad=4,
+                bgcolor="white"
+            )
+        elif portfolio_name == max(filtered_portfolios, key=filtered_portfolios.get):
+            fig.add_trace(go.Scatter(x=portfolio_frame["month"], y=portfolio_frame["savings"], line_shape='spline', name=portfolio_name, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+            fig.add_annotation(
+                x=portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'month'].iloc[0],
+                y=portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0],
+                text=f"{portfolio_name} is the best portfolio that meets your risk aversion parameters<br>"
+                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"This portfolio gives less returns but has a drawdown that meets your risk aversion criteria",
+                showarrow=True,
+                arrowhead=1,
+                ax=-150,
+                ay=-200,
                 font=dict(color="black"),
                 align="left",
                 bordercolor="black",
@@ -407,6 +467,111 @@ with tab3:
 with tab4:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[4]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab5:
+    fig = go.Figure()
+    current_portfolio = list(returns['Portfolio'].unique())[5]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab6:
+    fig = go.Figure()
+    current_portfolio = list(returns['Portfolio'].unique())[6]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab7:
+    fig = go.Figure()
+    current_portfolio = list(returns['Portfolio'].unique())[7]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab8:
+    fig = go.Figure()
+    current_portfolio = list(returns['Portfolio'].unique())[8]
+    spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
+    fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white"
+    )
+    fig.update_layout(
+        title={
+            'text': f"{current_portfolio} as chosen Portfolio over time",
+            'x': 0.5,
+            'xanchor': 'center',
+            'yanchor': 'top'
+        }
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+with tab9:
+    fig = go.Figure()
+    current_portfolio = list(returns['Portfolio'].unique())[9]
     spec_portfolio = returns.groupby('Portfolio').get_group(current_portfolio)
     fig.add_trace(go.Scatter(x=spec_portfolio['month'], y=spec_portfolio['savings'], line_shape='spline', name=current_portfolio, line=dict(color='blue'), hovertemplate="Month: %{x}<br>Savings: $%{y}"))
     fig.update_layout(
