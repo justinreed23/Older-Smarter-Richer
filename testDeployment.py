@@ -400,6 +400,14 @@ with tab0:
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. 
+    
+    """
 with tab1:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[1]
@@ -421,6 +429,13 @@ with tab1:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    AOR is the ticker symbol for the iShares Core Growth Allocation ETF. This ETF tracks the investment results of an index composed of a portfolio of underlying equity and fixed income funds intended to represent a growth allocation target risk strategy. It's designed for investors seeking capital appreciation and some income over the long term. The fund provides exposure to a mix of stocks and bonds, making it suitable for investors with a moderate risk tolerance who are looking for balanced growth and income potential.    
+    """
 with tab2:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[2]
@@ -442,6 +457,13 @@ with tab2:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    BND is the ticker symbol for the Vanguard Total Bond Market ETF, which seeks to track the performance of the Bloomberg Barclays U.S. Aggregate Float Adjusted Index. This index represents the US investment grade bond market, giving investors a low cost way to gain exposure to the fixed-income market. The portfolio consists of U.S. government, corporate, and securitized investment grade bonds. This ETF is best for those seeking stable income in their investment portfolio.
+    """
 with tab3:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[3]
@@ -463,6 +485,13 @@ with tab3:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    VFWAX is the ticker symbol for the Vanguard FTSE All-World ex US-Index Fund Admiral Shares. The fund tracks the FTSE All-World ex US-Index, comprising 3,000 stocks of companies in emerging markets. These markets are all outside of the United States, offering investors diversification outside of the US. This ETF is best for investors with a long investment horizon and who are comfortable with volatility and currency risk.
+    """
 with tab4:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[4]
@@ -484,6 +513,13 @@ with tab4:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    VNQ is the ticker for the Vanguard Real Estate ETF, tracking the performance of the MCSI US Investable Real Estate 25/50 Index. The index represents the performance of Real Estate Investment Trusts, and companies that invest in real estate through development, management, or ownership of property. This investment may be direct or indirect. These funds are suitable for those seeking an attractive income through high dividend yields, those looking for a low correlation with traditional stock/bond investing, and those seeking passive real estate exposure.
+    """
 with tab5:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[5]
@@ -505,6 +541,13 @@ with tab5:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    VTTVX is the ticker for the Vanguard Target Retirement 2060 Fund, offering exposure to a portfolio of stocks and bonds. The fund automatically adjusts its portfolio construction over time to become more conservative as the target date nears. This is suitable for young investor with a long horizon ahead. The investors prefer a hands-off approach, seeking both simplicity and diversification.
+    """
 with tab6:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[6]
@@ -526,6 +569,13 @@ with tab6:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY_VFWAX: offers diversification benefits from offering securities in both indexes: a portfolio of domestic and international securities, allowing for equity exposure across different regions. 
+    """
 with tab7:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[7]
@@ -547,6 +597,13 @@ with tab7:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY_BND: SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. BND is the ticker symbol for the Vanguard Total Bond Market ETF, which seeks to track the performance of the Bloomberg Barclays U.S. Aggregate Float Adjusted Index. This index represents the US investment grade bond market, giving investors a low cost way to gain exposure to the fixed-income market. The portfolio consists of U.S. government, corporate, and securitized investment grade bonds. This ETF is best for those seeking stable income in their investment portfolio. By combining stocks (SPY) with bonds (BND), investors can achieve a balanced portfolio with potential for growth from equities and stability from bonds.
+    """
 with tab8:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[8]
@@ -568,6 +625,14 @@ with tab8:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY_VNQ_BND: SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. BND is the ticker symbol for the Vanguard Total Bond Market ETF, which seeks to track the performance of the Bloomberg Barclays U.S. Aggregate Float Adjusted Index. This index represents the US investment grade bond market, giving investors a low cost way to gain exposure to the fixed-income market. The portfolio consists of U.S. government, corporate, and securitized investment grade bonds. This ETF is best for those seeking stable income in their investment portfolio. VNQ is the ticker for the Vanguard Real Estate ETF, tracking the performance of the MCSI US Investable Real Estate 25/50 Index. The index represents the performance of Real Estate Investment Trusts, and companies that invest in real estate through development, management, or ownership of property. This investment may be direct or indirect. These funds are suitable for those seeking an attractive income through high dividend yields, those looking for a low correlation with traditional stock/bond investing, and those seeking passive real estate exposure.  
+    """
 with tab9:
     fig = go.Figure()
     current_portfolio = list(returns['Portfolio'].unique())[9]
@@ -589,3 +654,10 @@ with tab9:
         }
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY_VFWAX_BND: SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. BND is the ticker symbol for the Vanguard Total Bond Market ETF, which seeks to track the performance of the Bloomberg Barclays U.S. Aggregate Float Adjusted Index. This index represents the US investment grade bond market, giving investors a low cost way to gain exposure to the fixed-income market. The portfolio consists of U.S. government, corporate, and securitized investment grade bonds. This ETF is best for those seeking stable income in their investment portfolio. VTTVX is the ticker for the Vanguard Target Retirement 2060 Fund, offering exposure to a portfolio of stocks and bonds. The fund automatically adjusts its portfolio construction over time to become more conservative as the target date nears. This is suitable for young investors with a long horizon ahead. The investors prefer a hands-off approach, seeking both simplicity and diversification. This combination aims to provide broad diversification across asset classes and geographical regions, potentially reducing overall portfolio risk.
+    """
