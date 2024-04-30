@@ -25,13 +25,49 @@ st.set_page_config(
 """
 # CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
 """
+#############################################
+# import custom sampling to allow users to resample
+#############################################
+ready_sample = pd.read_csv('inputs/ready_to_sample.csv')
+
+@st.cache_data
+def process_data(ready_to_sample):
+    """
+    Process the given dataframe to generate final_data.
+
+    Parameters:
+    ready_to_sample (pandas.DataFrame): The dataframe to be processed.
+
+    Returns:
+    pandas.DataFrame: The processed dataframe containing final_data.
+    """
+    wide_sim_life = ready_to_sample.sample(n=12*80, replace=True, ignore_index=True).reset_index()
+    etfs_full_tall = wide_sim_life.melt(id_vars='index', var_name='ETF', value_name='ret')
+    etfs_full_tall = etfs_full_tall[etfs_full_tall['ETF'] != 'Date']
+    etfs_full_tall = wide_sim_life.melt(id_vars='index', var_name='ETF', value_name='ret')
+    etfs_full_tall = etfs_full_tall[etfs_full_tall['ETF'] != 'Date']
+    etfs_full_tall.rename(columns={'index': 'month'}, inplace=True)
+    rets_wide = etfs_full_tall.pivot(index='month', columns='ETF', values='ret')
+    rets_wide['SPY_VFWAX'] = 0.5*rets_wide['SPY'] + 0.5 * rets_wide['VFWAX'] #domestic/international stock split
+    rets_wide['SPY_BND'] = 0.5*rets_wide['SPY'] + 0.5 * rets_wide['BND'] #stock/bond split
+    rets_wide['SPY_VNQ_BND'] = 0.5*rets_wide['SPY'] + 0.5 * rets_wide['VNQ'] #stock/bond/real estate split
+    rets_wide['SPY_VFWAX_BND'] = 0.4*rets_wide['SPY'] + 0.4 * rets_wide['VFWAX'] + 0.2 * rets_wide['BND'] #domestic/ international stock/bond split
+    final_data = rets_wide.reset_index().melt(id_vars='month', var_name='ETF', value_name='ret')
+    
+    return final_data
+
+
+
+returns = process_data(ready_sample)
 
 #############################################
 # start: sidebar
 #############################################
 
 with st.sidebar:
-
+    if st.button("Resample data"):
+        st.cache_data.clear()
+        
     '''
     ## Financial Assessment
     
@@ -97,7 +133,7 @@ month_start_savings = 0
 # portfolio df creation
 #############################################
 
-returns = pd.read_csv('inputs/etf_returns.csv')
+
 # rename the 'ETF' column to 'Portfolio'
 returns = returns.rename(columns={'ETF': 'Portfolio'})
 
