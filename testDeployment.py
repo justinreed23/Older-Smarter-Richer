@@ -268,9 +268,8 @@ max_key = max(final_utility, key=final_utility.get)
 # start: plot
 #############################################
 
+# creates a dict that is the utility values but only if they meet the drawdown criteria
 filtered_portfolios = {k: final_utility[k] for k in final_utility if drawdown_dict[k] == True}
-
-st.write(filtered_portfolios)
 
 
 returns = returns[(returns['month'] >= month_start_savings) & (returns['month'] <= death_month)]
