@@ -414,9 +414,9 @@ with tabOverview:
                     portfolio_frame["month"] == month_retirement_start, "savings"
                 ].iloc[0],
                 text=f"{portfolio_name} is the optimal portfolio<br>"
-                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
-                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.0f}<br>"
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.0f}<br>"
                 f"This portfolio also meets your risk aversion criteria",
                 showarrow=True,
                 arrowhead=1,
