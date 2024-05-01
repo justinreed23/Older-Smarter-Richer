@@ -11,8 +11,8 @@ import streamlit as st
 - Year of Graduation: 2024
 - Interests: 
 ### Maria Maragkelli
-- Major:
+- Major: Mechanical Engineering, IBE Finance
 - Year of Graduation: 2024
-- Interests: 
+- Interests: Racing, Making sh*t, Volleyball
 
 """
