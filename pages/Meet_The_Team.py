@@ -4,7 +4,7 @@ import streamlit as st
 ## About Us:
 ### Reghan Hesser
 title: "Reghan Hesser" 
-logo: "/images/headshot.jpg"
+logo: "/pictures/headshot.jpg"
 - Major: Finance 
 - Year of Graduation: 2024
 - Interests: Cooking, Skiing, Dancing 
