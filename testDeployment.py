@@ -93,14 +93,14 @@ with st.sidebar:
 
     submitted_income = st.number_input(
         "What is your annual income?(Max $10mil)",
-        min_value=0,
+        min_value=1,
         max_value=10000000,
         value=65000,
     )
     income_growth = (
         st.slider(
             "What is your expected annual income growth rate in percentage?",
-            min_value=1.0,
+            min_value=0.0,
             max_value=10.0,
             value=3.0,
             step=0.1,
@@ -129,7 +129,7 @@ with st.sidebar:
     save_rate = (
         st.slider(
             "What percent of your income do you expect to save annually?",
-            min_value=5.0,
+            min_value=0.1,
             max_value=40.0,
             value=10.0,
             step=0.1,
@@ -139,7 +139,7 @@ with st.sidebar:
     consumption_rate = (
         st.slider(
             "What percent of your income do you plan to spend annually in retirement? General investment advice is 4%",
-            min_value=1.0,
+            min_value=0.1,
             max_value=20.0,
             value=4.0,
             step=0.1,
@@ -163,7 +163,7 @@ with st.sidebar:
         acceptable_drawdown = 0.5
     else:
         risk_aversion = 4.84
-        acceptable_drawdown = 0.10
+        acceptable_drawdown = 0.1
 
     inher_util_options = ["None", "Low", "Medium", "High"]
     selected_inher_util = st.selectbox(
@@ -179,6 +179,17 @@ with st.sidebar:
         inher_util = 2360
     else:
         inher_util = 6000
+        
+    st.write("")
+    st.write("")
+    st.write("")
+    """
+    [Website Repository](https://github.com/justinreed23/Older-Smarter-Richer)
+    
+    [Data Preparation Repository](https://github.com/justinreed23/investingBackend)
+    
+    [Template Repository](https://github.com/donbowen/portfolio-frontier-streamlit-dashboard)
+    """
 
 
 #############################################
@@ -388,6 +399,7 @@ with tabOverview:
                 go.Scatter(
                     x=portfolio_frame["month"],
                     y=portfolio_frame["savings"],
+                    customdata=portfolio_frame["income"],
                     line_shape="spline",
                     name=portfolio_name,
                     line=dict(color="red"),
@@ -414,7 +426,7 @@ with tabOverview:
                 align="left",
                 bordercolor="black",
                 borderwidth=1,
-                borderpad=4,
+                borderpad=10,
                 bgcolor="white",
             )
         elif portfolio_name == max_key:
@@ -436,9 +448,9 @@ with tabOverview:
                     portfolio_frame["month"] == month_retirement_start, "savings"
                 ].iloc[0],
                 text=f"{portfolio_name} is the optimal portfolio but it does not meet your risk aversion parameters<br>"
-                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
-                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.0f}<br>"
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.0f}<br>"
                 f"However this Portfolio does not meet your risk aversion criteria",
                 showarrow=True,
                 arrowhead=1,
@@ -470,9 +482,9 @@ with tabOverview:
                     portfolio_frame["month"] == month_retirement_start, "savings"
                 ].iloc[0],
                 text=f"{portfolio_name} is the best portfolio that meets your risk aversion parameters<br>"
-                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.2f}<br>"
-                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.2f}<br>"
-                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.2f}<br>"
+                f"Savings at Retirement Start: ${portfolio_frame.loc[portfolio_frame['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+                f"Savings at Retirement End (Inheritance): ${portfolio_frame['savings'].iloc[-1]:,.0f}<br>"
+                f"Initial Annual Consumption: ${consumption_dict[portfolio_name]*12:,.0f}<br>"
                 f"This portfolio gives less returns but has a drawdown that meets your risk aversion criteria",
                 showarrow=True,
                 arrowhead=1,
@@ -523,10 +535,11 @@ with tab0:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -538,19 +551,28 @@ with tab0:
     )
     fig.update_layout(
         title={
-            "text": f"{current_portfolio} as chosen Portfolio over time<br>",
+            "text": f"{current_portfolio} as chosen Portfolio over time",
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
     )
     fig.add_annotation(
-        x=0,
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
         y=spec_portfolio.loc[
             spec_portfolio["month"] == month_retirement_start, "savings"
         ].iloc[0],
-        text="Hello!",
-        showarrow=False,
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
         font=dict(color="black"),
         align="left",
         bordercolor="black",
@@ -565,7 +587,7 @@ with tab0:
     #############################################
     """
     ### Portfolio Description
-    SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. 
+    AOR is the ticker symbol for the iShares Core Growth Allocation ETF. This ETF tracks the investment results of an index composed of a portfolio of underlying equity and fixed income funds intended to represent a growth allocation target risk strategy. It's designed for investors seeking capital appreciation and some income over the long term. The fund provides exposure to a mix of stocks and bonds, making it suitable for investors with a moderate risk tolerance who are looking for balanced growth and income potential.    
     """
 with tab1:
     fig = go.Figure()
@@ -575,10 +597,11 @@ with tab1:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -594,44 +617,30 @@ with tab1:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
     )
-    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
-    #############################################
-    # ETF Description
-    #############################################
-    """
-    ### Portfolio Description
-    AOR is the ticker symbol for the iShares Core Growth Allocation ETF. This ETF tracks the investment results of an index composed of a portfolio of underlying equity and fixed income funds intended to represent a growth allocation target risk strategy. It's designed for investors seeking capital appreciation and some income over the long term. The fund provides exposure to a mix of stocks and bonds, making it suitable for investors with a moderate risk tolerance who are looking for balanced growth and income potential.    
-    """
-with tab2:
-    fig = go.Figure()
-    current_portfolio = list(returns["Portfolio"].unique())[2]
-    spec_portfolio = returns.groupby("Portfolio").get_group(current_portfolio)
-    fig.add_trace(
-        go.Scatter(
-            x=spec_portfolio["month"],
-            y=spec_portfolio["savings"],
-            line_shape="spline",
-            name=current_portfolio,
-            line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
-        )
-    )
-    fig.update_layout(
-        xaxis_title="Month",
-        yaxis_title="Savings",
-        width=1000,
-        height=600,
-        template="plotly_white",
-    )
-    fig.update_layout(
-        title={
-            "text": f"{current_portfolio} as chosen Portfolio over time",
-            "x": 0.5,
-            "xanchor": "center",
-            "yanchor": "top",
-        }
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -641,18 +650,20 @@ with tab2:
     ### Portfolio Description
     BND is the ticker symbol for the Vanguard Total Bond Market ETF, which seeks to track the performance of the Bloomberg Barclays U.S. Aggregate Float Adjusted Index. This index represents the US investment grade bond market, giving investors a low cost way to gain exposure to the fixed-income market. The portfolio consists of U.S. government, corporate, and securitized investment grade bonds. This ETF is best for those seeking stable income in their investment portfolio.
     """
-with tab3:
+
+with tab2:
     fig = go.Figure()
-    current_portfolio = list(returns["Portfolio"].unique())[3]
+    current_portfolio = list(returns["Portfolio"].unique())[2]
     spec_portfolio = returns.groupby("Portfolio").get_group(current_portfolio)
     fig.add_trace(
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -668,7 +679,91 @@ with tab3:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
+    )
+    st.plotly_chart(fig, use_container_width=True, theme="streamlit")
+    #############################################
+    # ETF Description
+    #############################################
+    """
+    ### Portfolio Description
+    SPY is an exchange-traded fund (ETF) that tracks the performance of the Standard & Poor's 500 Index (S&P 500), which is a widely followed index of large-cap U.S. stocks. SPY offers exposure to a diversified portfolio of the 500 largest publicly traded companies in the United States. 
+    """
+with tab3:
+    fig = go.Figure()
+    current_portfolio = list(returns["Portfolio"].unique())[3]
+    spec_portfolio = returns.groupby("Portfolio").get_group(current_portfolio)
+    fig.add_trace(
+        go.Scatter(
+            x=spec_portfolio["month"],
+            y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
+            line_shape="spline",
+            name=current_portfolio,
+            line=dict(color="blue"),
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
+        )
+    )
+    fig.update_layout(
+        xaxis_title="Month",
+        yaxis_title="Savings",
+        width=1000,
+        height=600,
+        template="plotly_white",
+    )
+    fig.update_layout(
+        title={
+            "text": f"{current_portfolio} as chosen Portfolio over time",
+            "x": 0.5,
+            "xanchor": "center",
+            "yanchor": "top",
+            'font': dict(size=25)
+        }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -686,10 +781,11 @@ with tab4:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -705,7 +801,30 @@ with tab4:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -723,10 +842,11 @@ with tab5:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -742,7 +862,30 @@ with tab5:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -760,10 +903,11 @@ with tab6:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -779,7 +923,30 @@ with tab6:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -797,10 +964,11 @@ with tab7:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -816,7 +984,30 @@ with tab7:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################
@@ -834,10 +1025,11 @@ with tab8:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -853,10 +1045,32 @@ with tab8:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
     )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
+    )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
-
     #############################################
     # ETF Description
     #############################################
@@ -872,10 +1086,11 @@ with tab9:
         go.Scatter(
             x=spec_portfolio["month"],
             y=spec_portfolio["savings"],
+            customdata=spec_portfolio["income"],
             line_shape="spline",
             name=current_portfolio,
             line=dict(color="blue"),
-            hovertemplate="Month: %{x}<br>Savings: $%{y}",
+            hovertemplate="Month: %{x}<br>Savings: $%{y}<br>Monthly Income: $%{customdata:.0f}",
         )
     )
     fig.update_layout(
@@ -891,7 +1106,30 @@ with tab9:
             "x": 0.5,
             "xanchor": "center",
             "yanchor": "top",
+            'font': dict(size=25)
         }
+    )
+    fig.add_annotation(
+        x=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "month"
+        ].iloc[0],
+        y=spec_portfolio.loc[
+            spec_portfolio["month"] == month_retirement_start, "savings"
+        ].iloc[0],
+        text=f"Savings at Retirement Start: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start, 'savings'].iloc[0]:,.0f}<br>"
+        f"Savings at Retirement End (Inheritance): ${spec_portfolio['savings'].iloc[-1]:,.0f}<br>"
+        f"Initial Annual Consumption: ${consumption_dict[current_portfolio]*12:,.0f}<br>"
+        f"Income at Retirement: ${spec_portfolio.loc[spec_portfolio['month'] == month_retirement_start-1, 'income'].iloc[0]*12:,.0f}",
+        showarrow=True,
+        arrowhead=0,
+        ax=-250,
+        ay=-100,
+        font=dict(color="black"),
+        align="left",
+        bordercolor="black",
+        borderwidth=1,
+        borderpad=4,
+        bgcolor="white",
     )
     st.plotly_chart(fig, use_container_width=True, theme="streamlit")
     #############################################

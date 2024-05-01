@@ -23,7 +23,7 @@ st.latex(r'''
       1. The medium value is $3.84$
       2. We will adjust this based on respondents self-described risk aversion
    5. $θ$ is inheritance utility intensity
-      1. The medium value is $2360 multiplied by 12^{\gamma}$ to adjust for monthly returns
+      1. The medium value is $2360$ multiplied by $12^{\gamma}$ to adjust for monthly returns
       2. We will adjust this based on respondents self-described inheritance goals
    6. $B$ is inheritance amount
    7. $k$ is the extent to which inheritance is viewed as a luxury good
