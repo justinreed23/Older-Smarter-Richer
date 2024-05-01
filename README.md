@@ -31,5 +31,14 @@ streamlit run Interactive_Charts.py
 ```
 # In Conda
 cd <path to Older-Smarter-Richer folder>
-conda activate streamlit_env
+conda activate streamlit-env
+streamlit run Interactive_Charts.py
 ```
+
+## Modifications
+* You can modify the app while it's running locally using your preferred editor
+* Saving changes will update the local app automatically
+* Online app requires pushing changes to github
+
+
+[Template Source Repository](https://github.com/donbowen/portfolio-frontier-streamlit-dashboard/)
