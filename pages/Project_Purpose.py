@@ -34,4 +34,5 @@ st.latex(r'''
 Our work was inspired by "Beyond the Status Quo: A Critical Assessment of Lifecycle Investment Advice." In this paper, the authors discuss the limitations of the traditional 60:40 stock-bond approach and propose a new model that takes into account the individual's risk aversion and inheritance goals. However their study focuses on the average investor using a simulation of many possible American lifestyles. We wanted to take this a step further and create a model that is personalized to the individual investor.
 ## Caveats:
 Our models for the ETFs are not particularly robust and can use better refinement for accurate, large scale modeling. We are essentially saying past predictions will provide accurate predictions for future results. Our data consists of monthly returns from these ETFs, which also do not date back past around 40 years. Our model does not account for irregularities in the economic landscape.
+Ideally, our data would include more diverse asset classes and a wider range of historical data.
 """
