@@ -23,7 +23,8 @@ st.set_page_config(
 #############################################
 
 """
-# CAPM Portfolio Optimization with Risk Aversion Adjustment: Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
+# Portfolio Optimization with Risk Aversion Adjustment
+## Find Your Optimal Investment Portfolio for Retirement by filling Out Our Survey!
 """
 #############################################
 # import custom sampling to allow users to resample
